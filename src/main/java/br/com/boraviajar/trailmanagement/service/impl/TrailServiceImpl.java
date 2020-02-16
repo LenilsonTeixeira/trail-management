@@ -49,9 +49,15 @@ public class TrailServiceImpl implements TrailService {
     public Optional<TrailDTO> update(String id, TrailDTO trailDTO) {
         try {
             log.debug("Atualizando trilha id: {}", id);
+
             final Optional<TrailDTO> trailDb = this.findOne(id);
-            final Trail trail = this.trailRepository.save(trailMapper.convertToModel(trailDTO));
-            return Optional.ofNullable(trailMapper.convertToDTO(trail));
+
+            trailDb.ifPresent(trail -> trailDTO.setId(trail.getId()));
+
+            final Trail trailUpdated = this.trailRepository.save(trailMapper.convertToModel(trailDTO));
+
+            return Optional.ofNullable(trailMapper.convertToDTO(trailUpdated));
+
         } catch (Exception e) {
             log.error("Falha ao atualizar trilha com id: {}", id);
             throw new TrailException(String.format("Falha ao atualizar trilha id: %s", id));
@@ -62,7 +68,6 @@ public class TrailServiceImpl implements TrailService {
     public void delete(String id) {
         try {
             log.debug("Removendo trilha com id: {}", id);
-            final Optional<TrailDTO> trailDb = this.findOne(id);
             this.trailRepository.deleteById(id);
         } catch (Exception e){
             log.error("Falha ao remover trilha com id: {}", id);

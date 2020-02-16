@@ -1,6 +1,5 @@
 package br.com.boraviajar.trailmanagement.model;
 
-import br.com.boraviajar.trailmanagement.enumeration.DifficultyType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -30,9 +30,9 @@ public class Trail implements Serializable {
     private String description;
     private String city;
     private String state;
-    private DifficultyType difficulty;
-    private LocalDateTime departureDate;
-    private LocalDateTime returnDate;
+    private String difficulty;
+    private LocalDate departureDate;
+    private LocalDate returnDate;
     private LocalTime departureTime;
     private LocalTime returnTime;
     private String whatsappGroup;

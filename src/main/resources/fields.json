@@ -1,0 +1,12 @@
+{
+	"title": "titulo",
+	"description": "descricao",
+	"city": "cidade",
+	"state": "estado",
+	"difficulty": "dificuldade",
+	"departureDate": "dataPartida",
+	"returnDate": "dataRetorno",
+	"departureTime": "horarioRetorno",
+	"returnTime": "horarioRetorno",
+    "whatsappGroup": "grupoWhatsapp"
+}

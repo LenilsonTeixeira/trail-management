@@ -1,6 +1,7 @@
 package br.com.boraviajar.trailmanagement.controller;
 
 import br.com.boraviajar.trailmanagement.dto.TrailDTO;
+import br.com.boraviajar.trailmanagement.exception.TrailException;
 import br.com.boraviajar.trailmanagement.service.TrailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,6 @@ import java.util.Optional;
 @RequestMapping("/trilhas")
 public class TrailController {
 
-
     @Autowired
     private TrailService trailService;
 
@@ -36,23 +36,30 @@ public class TrailController {
     public ResponseEntity<Void> save(@Valid @RequestBody final TrailDTO trailDTO) {
         final Optional<TrailDTO> trailDb = this.trailService.save(trailDTO);
 
-        final URI uri = UriComponentsBuilder
-                .fromPath("trilhas/{id}")
-                .buildAndExpand(trailDb.get().getId())
-                .toUri();
+        final String id = trailDb.map(TrailDTO::getId).orElseThrow(() -> new TrailException("Erro ao salvar trilha"));
+
+        final URI uri = buildUri(id);
 
         return ResponseEntity.created(uri).build();
+
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TrailDTO> update(@PathVariable("id") final String id, @Valid @RequestBody final TrailDTO trailDTO) {
         return this.trailService.update(id, trailDTO)
-                .map(trail -> ResponseEntity.ok(trail)).get();
+                .map(ResponseEntity::ok).orElseThrow(() -> new TrailException(String.format("Erro ao atualizar trilha id %s", id)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") final String id) {
         this.trailService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private URI buildUri(final String id) {
+        return UriComponentsBuilder
+                .fromPath("trilhas/{id}")
+                .buildAndExpand(id)
+                .toUri();
     }
 }

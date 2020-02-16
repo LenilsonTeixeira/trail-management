@@ -1,18 +1,16 @@
 package br.com.boraviajar.trailmanagement.dto;
 
-import br.com.boraviajar.trailmanagement.enumeration.DifficultyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
@@ -26,8 +24,7 @@ public class TrailDTO implements Serializable {
     @JsonProperty("id")
     private String id;
 
-    @Max(value = 100, message = "O título deve conter no máximo 100 caracteres")
-    @Min(value = 5, message = "O título deve conter mais de 5 caracteres")
+    @Size(min = 5, max = 100, message = "O título deve conter mais de 5 caracteres e no máximo 100 caracteres")
     @NotEmpty(message = "Título é obrigatório")
     @JsonProperty("titulo")
     private String title;
@@ -35,12 +32,11 @@ public class TrailDTO implements Serializable {
     @JsonProperty("imagem")
     private String image;
 
-    @Min(value = 150, message="A descrição deve conter pelo menos 150 caracteres")
     @NotEmpty(message = "Descrição obrigatória")
     @JsonProperty("descricao")
     private String description;
 
-    @Max(value = 30, message = "O nome da cidade deve conter no máximo 30 caracteres")
+    @Size(max = 30, message = "O nome da cidade deve conter no máximo 30 caracteres")
     @NotEmpty(message = "O nome da cidade é obrigatório")
     @JsonProperty("cidade")
     private String city;
@@ -51,15 +47,15 @@ public class TrailDTO implements Serializable {
 
     @NotNull(message = "O nível de dificuldade da trilha é obrigatório")
     @JsonProperty("dificuldade")
-    private DifficultyType difficulty;
+    private String difficulty;
 
     @NotNull(message = "A data da partida é obrigatório")
     @JsonProperty("dataPartida")
-    private LocalDateTime departureDate;
+    private LocalDate departureDate;
 
     @NotNull(message = "A data do retorno é obrigatório")
     @JsonProperty("dataRetorno")
-    private LocalDateTime returnDate;
+    private LocalDate returnDate;
 
     @NotNull(message = "O horário de partida é obrigatório")
     @JsonProperty("horarioPartida")
